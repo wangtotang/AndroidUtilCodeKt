@@ -14,8 +14,15 @@ import java.io.Serializable
 🐶
 🐶 @apiNote
  */
+
+/**
+ * A simple [Intent] class ,it can provide chain programming
+ */
 class SimpleIntent<T : Activity>(val activity: Activity, cls: Class<T>) : Intent(activity, cls) {
 
+    /**
+     * Add some extended data to the [Intent].
+     */
     fun putExtras(vararg params: Pair<String, Any>): SimpleIntent<T> {
         if (params.isNotEmpty()) {
             for ((k, v) in params) {
@@ -163,10 +170,17 @@ class SimpleIntent<T : Activity>(val activity: Activity, cls: Class<T>) : Intent
         return this
     }
 
+    /**
+     * Launch a new activity.
+     */
     fun startActivity() {
         activity.startActivity(this)
     }
 
+    /**
+     * Launch a new activity.
+     * @param requestCode
+     */
     fun startActivityForResult(requestCode: Int) {
         activity.startActivityForResult(this, requestCode)
     }

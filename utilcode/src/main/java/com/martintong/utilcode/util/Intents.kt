@@ -16,7 +16,7 @@ import android.content.Intent
  * Launch a new activity.
  * @param activity the launcher activity
  */
-inline fun Intent.startActivity(activity: Activity) {
+fun Intent.startActivity(activity: Activity) {
     activity.startActivity(this)
 }
 
@@ -25,6 +25,6 @@ inline fun Intent.startActivity(activity: Activity) {
  * @param clazz the new activity
  * @param requestCode
  */
-inline fun <T : Activity> Intent.startActivityForResult(activity: Activity, requestCode: Int) {
+fun <T : Activity> Intent.startActivityForResult(activity: Activity, requestCode: Int) {
     activity.startActivityForResult(this, requestCode)
 }

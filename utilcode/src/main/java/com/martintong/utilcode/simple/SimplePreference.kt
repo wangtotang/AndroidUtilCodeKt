@@ -13,6 +13,10 @@ import kotlin.reflect.KProperty
 🐶
 🐶 @apiNote
  */
+
+/**
+ * A simple [SharedPreferences] delegate class
+ */
 class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, T> {
 
     var spName: String? = null
@@ -22,6 +26,11 @@ class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, 
         context.getSharedPreferences(spName ?: context.packageName + "_preferences", Context.MODE_PRIVATE)
     }
 
+    /**
+     * the constructor can set the [SharedPreferences] name and the key name
+     * @param context
+     * @param str the [SharedPreferences] name or the key name
+     */
     constructor(context: Context, vararg str: String) : this(context) {
         when {
             str.size == 1 -> spName = str[0]
@@ -32,6 +41,11 @@ class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, 
         }
     }
 
+    /**
+     * the constructor can set the [SharedPreferences] name and the key name
+     * @param context
+     * @param str the [SharedPreferences] name or the key name
+     */
     constructor(context: Context, vararg str: String, default: T) : this(context) {
         when {
             str.size == 1 -> spName = str[0]
@@ -51,6 +65,10 @@ class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, 
         putPreference(key ?: property.name, value)
     }
 
+    /**
+     * remove some values from the [SharedPreferences] by keys
+     * @param key
+     */
     fun delete(vararg key: String): Unit {
         when (key.size) {
             0 -> prefs.edit().clear().commit()
@@ -58,6 +76,11 @@ class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, 
         }
     }
 
+    /**
+     * get value from the [SharedPreferences] by key name
+     * @param name
+     * @param type the return type of property
+     */
     private fun findPreference(name: String, type: String): T = with(prefs) {
         val res: Any = when (type) {
             "kotlin.Long" -> getLong(name, defaultValue as? Long ?: 0L)
@@ -70,6 +93,11 @@ class SimplePreference<T : Any>(val context: Context) : ReadWriteProperty<Any?, 
         res as T
     }
 
+    /**
+     * put value to the [SharedPreferences] by key name
+     * @param name
+     * @param value
+     */
     private fun putPreference(name: String, value: Any) = with(prefs.edit()) {
         when (value) {
             is Long -> putLong(name, value)

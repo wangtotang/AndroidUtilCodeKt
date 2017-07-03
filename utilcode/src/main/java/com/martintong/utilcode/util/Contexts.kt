@@ -2,10 +2,9 @@
 
 package com.martintong.utilcode.util
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.widget.Toast
+import android.os.Handler
+import android.os.Looper
 
 /**
 🐶 @author  Martin_Tong
@@ -15,36 +14,13 @@ import android.widget.Toast
  */
 
 /**
- * Returns true if the [Activity] is existent
- * @param packageName
- * @param className (Note:fully qualified class name)
- * @return
+ * Execute [f] on the application UI thread.
  */
-inline fun Context.isActivityExist(packageName: String, className: String): Boolean =
-        packageManager.resolveActivity(Intent().setClassName(packageName, className), 0) != null
+fun Context.runOnUiThread(f: Context.() -> Unit) {
+    if (Looper.getMainLooper().thread == Thread.currentThread()) f()
+    else Handler(Looper.getMainLooper()).post { f() }
+}
 
-/**
- * Display the [Toast] message with the [Toast.LENGTH_SHORT] duration.
- * @param message
- */
-inline fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-/**
- * Display the [Toast] message with the [Toast.LENGTH_SHORT] duration.
- * @param message
- */
-inline fun Context.toast(message: Int) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-/**
- * Display the [Toast] message with the [Toast.LENGTH_LONG] duration.
- * @param message
- */
-inline fun Context.longToast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
-/**
- * Display the [Toast] message with the [Toast.LENGTH_LONG] duration.
- * @param message
- */
-inline fun Context.longToast(message: Int) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 
